@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Схема Эль-Гамаля</title>
+</head>
+<body>
+<script type="text/javascript">
+		var p = prompt("Введите P");
+		function phi (n) {
+			let result = n;
+			for (let i=2; i*i<=n; ++i) {
+				if (n % i == 0) {
+					while (n % i == 0)
+						n /= i;
+					result -= result / i;
+				}
+			}
+			if (n > 1)
+				result -= result / n;
+			return result;
+		}
+
+		var f = phi(p);
+		var koren = 0;
+		document.write("f="+f+"<br>");
+
+		for (let i=2;i<p;i++) {
+			let g = Math.pow(i,f);
+			if(g%p == 1) {
+				koren = i;
+				break;
+			}
+		}
+		document.write("koren="+koren+"<br>");
+
+		function x() {
+			let b = p-1;
+			var x = prompt("Ввдети число 1<x<"+b);
+			if(x>1){
+				if(x<p-1){
+					return x;
+				}
+				else {
+					alert("Ошибка x>=p-1");
+					throw new Error();
+				}
+			}
+			else{
+				alert("Ошибка x<1");
+				throw new Error();
+
+			}
+		}
+
+		var x = x();
+		document.write("x="+x+"<br>");
+
+		var y = Math.pow(koren,x)%p;
+		document.write("y="+y+"<br>"); 
+
+		var openKey = [p,koren,y];
+		var closedKey = x;
+
+		var m = prompt("Введите M<"+p);
+		document.write("m="+m+"<br>");
+		if (m.length > 1) {
+			alert("Ошибка M>1");
+			throw new Error();
+		}
+		let arr_ru = ['а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ы', 'ъ', 'э', 'ю', 'я'];
+		let arr_RU = ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ь', 'Ы', 'Ъ', 'Э', 'Ю', 'Я'];
+		let arr_en = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+		let arr_EN = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+		var mu = 0;
+		var check = 0;
+
+		if(arr_ru.includes(m)) {
+			for(let i=0;i<arr_ru.length;i++) {
+				if(arr_ru[i] == m) {
+					mu = i+1;
+					check = 1;
+					break;
+				}
+			}
+		}
+		else if(arr_RU.includes(m)) {
+			for(let i=0;i<arr_RU.length;i++) {
+				if(arr_RU[i] == m) {
+					mu = i+1;
+					check = 2;
+					break;
+				}
+			}
+		}
+		else if(arr_en.includes(m)) {
+			for(let i=0;i<arr_en.length;i++) {
+				if(arr_en[i] == m) {
+					mu = i+1;
+					check = 3;
+					break;
+				}
+			}
+		}
+		else if(arr_EN.includes(m)) {
+			for(let i=0;i<arr_EN.length;i++) {
+				if(arr_EN[i] == m) {
+					mu = i+1;
+					check = 4;
+					break;
+				}
+			}
+		}
+		else {
+			mu = m;
+		}
+		document.write("mu="+mu+"<br>");
+
+
+		function k() {
+			let b = p-1;
+			var x = prompt("Ввдети число 1<k<"+b);
+			if(x>1){
+				if(x<p-1){
+					return x;
+				}
+				else {
+					alert("Ошибка k>p-1");
+					throw new Error();
+				}
+			}
+			else{
+				alert("Ошибка k<1");
+				throw new Error();
+			}
+		}
+
+		var k = k();
+		document.write("k="+k+"<br>");
+
+		var a = Math.pow(koren,k)%p;
+		var b = (Math.pow(y,k)*mu)%p;
+
+		document.write("a="+a+"<br>");
+		document.write("b="+b+"<br>");
+
+		var shifr = [a,b];
+		document.write("shifr="+shifr+"<br>");
+		var l = p-1-x;
+		var newM = (Math.pow(a,l)*b)%p;
+		document.write("newM="+newM+"<br>");
+
+		var newMletter;
+
+		switch(check) {
+		case 1 :
+			newMletter = arr_ru[mu-1];
+			break;
+		case 2 :
+			newMletter = arr_RU[mu-1];
+			break;
+		case 3 :
+			newMletter = arr_en[mu-1];
+			break;
+		case 4 :
+			newMletter = arr_EN[mu-1];
+			break;
+		}
+
+		document.write("newMletter="+newMletter+"<br>");
+</script>
+</body>
+</html>
